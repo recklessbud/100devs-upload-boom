@@ -1,0 +1,49 @@
+const express = require('express')
+const router = express.Router()
+const authController = require("../controller/auth")
+const {ensureAuth, ensureGuest} = require('../middleware/ensureAuth')
+
+
+
+
+
+// @desc       --man-page--
+//@route        GET/
+router.get("/", ensureGuest, (req, res)=> {
+    res.render("index.ejs")
+})
+
+//@desc   --profile page--
+ //route   ----GET/Profile
+   router.get("/profile", ensureAuth, (req, res)=> {
+     const user = req.user
+      console.log(user)
+    res.render('profile.ejs', {user:  user })
+   })
+//@desc   login page
+//route   GET/login
+  router.get("/login", authController.getLogin)
+
+//@desc   signup page
+//route   GET/signup
+  router.get("/signup", authController.getSignup)
+
+
+//@desc   login page
+//route   POST/login
+  router.post("/login", authController.postLogin)
+
+
+//@desc   login page
+//route   POST/login
+ router.post('/signup', authController.postSignup)
+
+//@desc   login page
+//route   GET/logout
+  router.get('/logout', authController.logout)
+ 
+
+
+
+
+module.exports = router
