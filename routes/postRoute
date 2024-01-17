@@ -1,0 +1,12 @@
+const express = require("express")
+const router = express.Router()
+const postController = require("../controller/postController")
+const {ensureAuth, ensureGuest} = require('../middleware/ensureAuth')
+const multer = require("../middleware/multer");
+
+
+
+
+
+
+module.exports = router

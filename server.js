@@ -14,6 +14,9 @@ const mongoose = require("mongoose")
 //path to mainRoutes
   const mainRoutes = require("./routes/mainRoutes")
 
+  //path to postRoutes
+  const postRoutes = require('./routes/postRoute')
+
   //path to passport
     require("./config/passport")
 
@@ -62,10 +65,11 @@ apps.use(
 
   //use flash for error messages etc
     apps.use(flash())
-
+ 
 
   //use routes
    apps.use('/', mainRoutes)
+   apps.use("/post", postRoutes);
 
 apps.listen(process.env.PORT,() =>{
     console.log(`server running in ${process.env.NODE_ENV} mode on port ${PORT}`)
