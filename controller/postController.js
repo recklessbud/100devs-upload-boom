@@ -5,11 +5,11 @@ module.exports= {
   getProfile: async(req, res)=>{
    try {
     //find the login user using the id
-    const post = await Post.find({user: req.params.id})
+    const posts = await Post.find({user: req.params.id})
      const user = req.user
       console.log(user)
       //if successful render the profile.ejs page 
-     res.render("profile.ejs", {post: post, user: user })
+     res.render("profile.ejs", {posts: posts, user: user })
    } catch (error) {
     console.error(error)
    }
@@ -19,16 +19,16 @@ module.exports= {
         //find all posts in the db sort in descending order (time created at) lean fishing out the obj needed 
         const posts = await Post.find().sort({createdAt: "desc"}).lean()
         //successful... load feed page
-         res.render("feed.ejs", {post: posts})
+         res.render("feed.ejs", {posts: posts})
     } catch (error) {
         console.error(error)       
     }
   }, 
    getPost: async(req, res) => {
    try {
-     const posts = await Post.findById({user: req.params.id})
+     const posts = await Post.findById(req.params.id)
       const user = req.user
-     res.render("posts.ejs", {post: posts, user: user})
+     res.render("post.ejs", {post: posts, user: user})
    } catch (error) {
     console.error(error)
    }
@@ -36,7 +36,7 @@ module.exports= {
    createPost: async(req, res) => {
     try {
         //upload images to cloudinary
-        const results = cloudinary.uploader.upload(req.file.path)
+        const results = await cloudinary.uploader.upload(req.file.path)
        await Post.create({
         title: req.body.title,
         image: results.secure_url,
@@ -46,7 +46,7 @@ module.exports= {
         cloudinaryId: results.public_id
        })
 
-       console.log('post created sucessfully')
+       console.log('post created successful')
        res.redirect("/profile")
     } catch (error) {
         console.error(error)
@@ -67,13 +67,13 @@ module.exports= {
     try {
        const posts = await Post.findById({_id: req.params.id})
 
-       await cloudinary.uploader.destroy(post.cloudinaryId)
-       await Post.remove({_id: req.params.id})
+       await cloudinary.uploader.destroy(posts.cloudinaryId)
+       await Post.deleteOne({_id: req.params.id})
 
        console.log('deleted')
        res.redirect('/profile')  
         } catch (error) {
-      
+      console.error(error)
     }
    }
 }

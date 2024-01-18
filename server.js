@@ -62,7 +62,7 @@ apps.use(
   apps.use(passport.initialize());
   apps.use(passport.session()); 
 
-
+  
   //use flash for error messages etc
     apps.use(flash())
  

@@ -1,6 +1,7 @@
 const express = require('express')
 const router = express.Router()
 const authController = require("../controller/auth")
+const postController = require('../controller/postController')
 const {ensureAuth, ensureGuest} = require('../middleware/ensureAuth')
 
 
@@ -15,13 +16,15 @@ router.get("/", ensureGuest, (req, res)=> {
 
 //@desc   --profile page--
  //route   ----GET/Profile
-   router.get("/profile", ensureAuth, (req, res)=> {
-     const user = req.user
-      console.log(user)
-    res.render('profile.ejs', {user:  user })
-   })
-//@desc   login page
-//route   GET/login
+  router.get("/profile", ensureAuth, postController.getProfile)
+
+//@desc    --feed-page--
+//@route   ---Get/feed--
+  router.get('/feed', postController.getFeed)
+
+
+//@desc   --login-page--
+//@route   GET/login
   router.get("/login", authController.getLogin)
 
 //@desc   signup page

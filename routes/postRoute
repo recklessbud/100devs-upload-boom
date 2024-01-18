@@ -4,7 +4,23 @@ const postController = require("../controller/postController")
 const {ensureAuth, ensureGuest} = require('../middleware/ensureAuth')
 const multer = require("../middleware/multer");
 
+//@desc      --post page--
+//@route        GET/:id        id is parameter
+ router.get('/:id', ensureAuth, postController.getPost)
+ 
+ 
+ //@desc      --create post--
+ //@route      --POST/createPost
+ router.post("/createPost", multer.single("file"), postController.createPost)
 
+ //@desc      --like-post--
+ //@route     --PUT/likePost
+ router.put('/likePost/:id', postController.likePost)
+
+
+ //@desc      --delete-post--
+ //@route     --DELETE/deletePost
+ router.delete('/deletePost/:id', postController.deletePost)
 
 
 
